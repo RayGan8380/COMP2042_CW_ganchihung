@@ -6,7 +6,7 @@ import java.awt.geom.RectangularShape;
 
 /**
  * Created by filippo on 04/09/16.
- *
+ *sdsfwerq
  */
 abstract public class Ball {
 
