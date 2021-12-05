@@ -47,14 +47,13 @@ public class GameFrame extends JFrame implements WindowFocusListener {
 
         this.setUndecorated(true);
 
-
     }
 
     public void initialize() {
         this.setTitle(DEF_TITLE);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.pack();
-        this.autoLocate();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
@@ -69,12 +68,12 @@ public class GameFrame extends JFrame implements WindowFocusListener {
 
     }
 
-    private void autoLocate() {
+    /* private void autoLocate() {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (size.width - this.getWidth()) / 2;
         int y = (size.height - this.getHeight()) / 2;
         this.setLocation(x, y);
-    }
+    }*/
 
 
     @Override
