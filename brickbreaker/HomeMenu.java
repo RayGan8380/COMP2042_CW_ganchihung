@@ -326,8 +326,7 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
             System.exit(0);
         }
         else if(infoButton.contains(p)){
-            System.out.println("Goodbye " + System.getProperty("user.name"));
-            System.exit(0);
+            owner.enableInfoScreen();
         }
     }
 
