@@ -322,8 +322,7 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
             System.exit(0);
         }
         else if(leaderboardButton.contains(p)){
-            System.out.println("Goodbye " + System.getProperty("user.name"));
-            System.exit(0);
+            owner.enableLeaderboard();
         }
         else if(infoButton.contains(p)){
             owner.enableInfoScreen();
@@ -392,6 +391,8 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
     public void mouseMoved(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint();
         if(startButton.contains(p) || menuButton.contains(p))
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        else if (leaderboardButton.contains(p) || infoButton.contains(p))
             this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         else
             this.setCursor(Cursor.getDefaultCursor());

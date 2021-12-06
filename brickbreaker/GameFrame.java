@@ -30,6 +30,7 @@ public class GameFrame extends JFrame implements WindowFocusListener {
     private GameBoard gameBoard;
     private HomeMenu homeMenu;
     private InfoScreen infoScreen;
+    private Leaderboard leaderboard;
 
     private boolean gaming;
 
@@ -45,6 +46,8 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         homeMenu = new HomeMenu(this,new Dimension(450,300));
 
         infoScreen = new InfoScreen(this,new Dimension(450,300));
+
+        leaderboard = new Leaderboard(this,new Dimension(450,300));
 
         this.add(homeMenu,BorderLayout.CENTER);
 
@@ -70,6 +73,7 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         this.addWindowFocusListener(this);
 
     }
+
     public void enableInfoScreen(){
         this.dispose();
         this.remove(homeMenu);
@@ -79,22 +83,27 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         /*to avoid problems with graphics focus controller is added here*/
         this.addWindowFocusListener(this);
     }
+
     public void enableHomeMenu(){
         this.dispose();
         this.remove(infoScreen);
+        this.remove(leaderboard);
         this.add(homeMenu, BorderLayout.CENTER);
         this.setUndecorated(false);
         initialize();
         /*to avoid problems with graphics focus controller is added here*/
         this.addWindowFocusListener(this);
     }
+    public void enableLeaderboard(){
+        this.dispose();
+        this.remove(homeMenu);
+        this.add(leaderboard, BorderLayout.CENTER);
+        this.setUndecorated(false);
+        initialize();
+        /*to avoid problems with graphics focus controller is added here*/
+        this.addWindowFocusListener(this);
+    }
 
-    /* private void autoLocate() {
-        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (size.width - this.getWidth()) / 2;
-        int y = (size.height - this.getHeight()) / 2;
-        this.setLocation(x, y);
-    }*/
 
     @Override
     public void windowGainedFocus(WindowEvent windowEvent) {
