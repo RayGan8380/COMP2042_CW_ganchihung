@@ -35,13 +35,10 @@ abstract public class Brick  {
         public static final int VERTICAL = 100;
         public static final int HORIZONTAL = 200;
 
-
-
         private GeneralPath crack;
 
         private int crackDepth;
         private int steps;
-
 
         public Crack(int crackDepth, int steps){
 
@@ -50,8 +47,6 @@ abstract public class Brick  {
             this.steps = steps;
 
         }
-
-
 
         public GeneralPath draw(){
 
