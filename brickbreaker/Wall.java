@@ -32,8 +32,8 @@ public class Wall {
     private Random rnd;
     private Rectangle area;
 
-    private Leaderboard leaderboard;
-    private GameFrame owner;
+    //private Leaderboard leaderboard;
+    //private GameFrame owner;
 
     Brick[] bricks;
     Ball ball;

@@ -107,11 +107,11 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         this.addWindowFocusListener(this);
     }
     public boolean getClickedFromGameOver(){
+
         return clickedFromGameOver;
     }
-    public boolean setClickedFromGameOver(boolean ClickedFromGameOver){
+    public void setClickedFromGameOver(boolean ClickedFromGameOver){
         clickedFromGameOver = ClickedFromGameOver;
-        return clickedFromGameOver;
     }
 
     @Override

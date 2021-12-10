@@ -12,13 +12,7 @@ import javax.swing.*;
 public class InfoScreen extends JComponent implements MouseListener, MouseMotionListener {
     private GameFrame owner;
 
-    private static final String INFO1 = "Press A key will move left";
-    private static final String INFO2 = "Press D key will move right";
-    private static final String INFO3 = "Press SPACE key will start";
-    private static final String INFO4 = "and pause the game";
-    private static final String INFO5 = "Press ESC key will enter Menu";
-    private static final String INFO6 = "Press SHIFT + ALT + F1 key";
-    private static final String INFO7 = "will enter Settings";
+    private static final String  INFO = "Press A key will move left,Press D key will move right,Press SPACE key will start,and pause the game,Press ESC key will enter Menu,Press SHIFT + ALT + F1 key,will enter Settings";
     private static final String BACK_TEXT = "Back";
     private Font infoFont;
 
@@ -45,50 +39,26 @@ public class InfoScreen extends JComponent implements MouseListener, MouseMotion
     }
 
     public void paint(Graphics g ){
-        Graphics2D g2d = (Graphics2D) g;                                                    //fill background
+        Graphics2D g2d = (Graphics2D) g;
+        FontRenderContext frc = g2d.getFontRenderContext();
+
+        drawContainer(g2d);
+        drawButton(g2d, frc);
+        drawText(g2d, frc);
+
+    }
+
+    private void drawContainer(Graphics2D g2d){
         g2d.setColor(new Color(255, 229, 204));
         g2d.fill(infoFace);
 
-        g2d.setColor(new Color (0, 204,0));                                         //print info text
-        FontRenderContext frc = g2d.getFontRenderContext();
+    }
 
-        Rectangle2D info1Rect = infoFont.getStringBounds(INFO1,frc);
-        Rectangle2D info2Rect = infoFont.getStringBounds(INFO2,frc);
-        Rectangle2D info3Rect = infoFont.getStringBounds(INFO3,frc);
-        Rectangle2D info4Rect = infoFont.getStringBounds(INFO4,frc);
-        Rectangle2D info5Rect = infoFont.getStringBounds(INFO5,frc);
-        Rectangle2D info6Rect = infoFont.getStringBounds(INFO6,frc);
-        Rectangle2D info7Rect = infoFont.getStringBounds(INFO7,frc);
+    private void drawButton(Graphics2D g2d, FontRenderContext frc){                              //back button
 
-        int centerX,centerY;
-
-        centerX = (int)(infoFace.getWidth() - info1Rect.getWidth()) / 2;
-        centerY = (int)(infoFace.getHeight() / 6);
-        g2d.setFont(infoFont);
-        g2d.drawString(INFO1,centerX,centerY);
-        centerX = (int)(infoFace.getWidth() - info2Rect.getWidth()) / 2;
-        centerY += 25;
-        g2d.drawString(INFO2,centerX,centerY);
-        centerX = (int)(infoFace.getWidth() - info3Rect.getWidth()) / 2;
-        centerY += 25;
-        g2d.drawString(INFO3,centerX,centerY);
-        centerX = (int)(infoFace.getWidth() - info4Rect.getWidth()) / 2;
-        centerY += 25;
-        g2d.drawString(INFO4,centerX,centerY);
-        centerX = (int)(infoFace.getWidth() - info5Rect.getWidth()) / 2;
-        centerY += 25;
-        g2d.drawString(INFO5,centerX,centerY);
-        centerX = (int)(infoFace.getWidth() - info6Rect.getWidth()) / 2;
-        centerY += 25;
-        g2d.drawString(INFO6,centerX,centerY);
-        centerX = (int)(infoFace.getWidth() - info7Rect.getWidth()) / 2;
-        centerY += 25;
-        g2d.drawString(INFO7,centerX,centerY);
-
-
-        Rectangle2D backRect = infoFont.getStringBounds(BACK_TEXT,frc);                     //back button
-        centerX = (infoFace.width - backButton.width) / 2;
-        centerY += 50;
+        Rectangle2D backRect = infoFont.getStringBounds(BACK_TEXT,frc);
+        int centerX = (infoFace.width - backButton.width) / 2;
+        int centerY = 270;
         backButton.setLocation(centerX,centerY);
 
         centerX = (int)(infoFace.getWidth() - backRect.getWidth()) / 2;
@@ -108,6 +78,25 @@ public class InfoScreen extends JComponent implements MouseListener, MouseMotion
         else{
             g2d.draw(backButton);
             g2d.drawString(BACK_TEXT,centerX,centerY);
+        }
+
+    }
+    private void drawText(Graphics2D g2d, FontRenderContext frc){                               //print info text
+        g2d.setColor(new Color (0, 204,0));
+        g2d.setFont(infoFont);
+        int centerX,centerY, spacing=0;
+        String[]line = INFO.split(",");
+
+        for(String lines : line){
+            Rectangle2D infoRect = infoFont.getStringBounds(lines, frc);
+
+            centerX = (int)(infoFace.getWidth() - infoRect.getWidth()) / 2;
+            centerY = (int)(infoFace.getHeight() / 6) + spacing;
+
+            g2d.drawString(lines,centerX,centerY);
+
+            spacing += 25;
+
         }
 
     }

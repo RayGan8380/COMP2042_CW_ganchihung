@@ -2,7 +2,6 @@ package brickbreaker;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -20,11 +19,10 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
     private Rectangle leaderboardFrame;
     private Rectangle backButton;
 
-    private int[] leaderboardPos  = {0,0,0,0,0,0};
+    private int[] leaderboardRanking  = {0,0,0,0,0,0};
     private int currentScore = 0;
     private String line = "";
     private String[] values;
-    private Timer leaderboardUpdate;
 
     private Font buttonFont;
     private Font textFont;
@@ -49,24 +47,22 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
         leaderboardFrame = new Rectangle(new Point(10,10), new Dimension(430,280));
         this.setPreferredSize(area);
 
-        //create file or access previous file
-        try {
+        try {                                           //create file or access previous file
             BufferedReader reader = new BufferedReader(new FileReader("Game_High_Scores.txt"));
-            System.out.println("Reed file");
             line = reader.readLine();
             values = line.split(",");
 
             for (int i = 0; i<6; i++){
-            leaderboardPos[i] = valueOf(values[i]);
+            leaderboardRanking[i] = valueOf(values[i]);
             }
             reader.close();
-            repaint();
+
         }catch(FileNotFoundException e) {
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter("Game_High_Scores.txt"));
                 System.out.println("Write file");
                 for (int i = 0; i < 6; i++)
-                    writer.write(leaderboardPos[i] + ",");
+                    writer.write(leaderboardRanking[i] + ",");
                 writer.close();
 
             } catch (IOException c) {
@@ -89,13 +85,13 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
         Graphics2D g2d = (Graphics2D) g;
         FontRenderContext frc = g2d.getFontRenderContext();
 
-        drawContainer(g2d, frc);
+        drawContainer(g2d);
         drawButton(g2d, frc);
         drawContent(g2d, frc);
 
     }
 
-    private void drawContainer(Graphics2D g2d, FontRenderContext frc){
+    private void drawContainer(Graphics2D g2d){
         g2d.setColor(DARKBLUE);
         g2d.fill(leaderboardFace);
 
@@ -143,20 +139,21 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
         g2d.setFont(textFont);
         g2d.drawString("LEADERBOARD",centerX,centerY);
 
-        String[] Pos = {"1", "2", "3", "4", "5"};
-        try {
+        try {                                                                         //read file to update
             BufferedReader reader = new BufferedReader(new FileReader("Game_High_Scores.txt"));
             System.out.println("Reed file");
             line = reader.readLine();
             values = line.split(",");
 
             for ( int i = 0; i<6; i++){
-                leaderboardPos[i] = valueOf(values[i]);
+                leaderboardRanking[i] = valueOf(values[i]);
             }
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        String[] rank = {"1", "2", "3", "4", "5"};                                  //rank and ranking
         for(int i = 0; i <6; i++ ) {
             setFont(scoreFont);
 
@@ -178,29 +175,31 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
                 centerX = (int)((leaderboardFrame.getWidth() - scoreRect.getWidth()) / 3.3);
                 g2d.drawString( "Current:", centerX, centerY);
             }else
-                g2d.drawString( Pos[i], centerX, centerY);
+                g2d.drawString( rank[i], centerX, centerY);
         }
 
     }
 
     public void pointsCompare(int newPoints){
         currentScore = newPoints;
-        leaderboardPos[5] = newPoints;
+        leaderboardRanking[5] = newPoints;
+
         for (int i = 0; i<6; i++ ){                         //arrange points in descending order
             for(int j = 0; j<6; j++){
-                if (leaderboardPos[i] > leaderboardPos[j]) {
-                    int temp = leaderboardPos[j];
-                    leaderboardPos[j] = leaderboardPos[i];
-                    leaderboardPos[i] = temp;
+                if (leaderboardRanking[i] > leaderboardRanking[j]) {
+                    int temp = leaderboardRanking[j];
+                    leaderboardRanking[j] = leaderboardRanking[i];
+                    leaderboardRanking[i] = temp;
                 }
             }
         }
-        leaderboardPos[5] = currentScore;
-        try {
+        leaderboardRanking[5] = currentScore;                 //to display current score
+
+        try {                                              //write and read file again
             BufferedWriter writer = new BufferedWriter(new FileWriter("Game_High_Scores.txt"));
 
             for (int i = 0; i < 6; i++)
-                writer.write(leaderboardPos[i] + ",");
+                writer.write(leaderboardRanking[i] + ",");
             writer.close();
 
             BufferedReader reader = new BufferedReader(new FileReader("Game_High_Scores.txt"));
@@ -209,14 +208,13 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
             values = line.split(",");
 
             for (int i = 0; i<6; i++){
-                leaderboardPos[i] = valueOf(values[i]);
+                leaderboardRanking[i] = valueOf(values[i]);
             }
             reader.close();
 
         }catch (IOException c){
             c.printStackTrace();
         }
-        repaint();
 
     }
     @Override

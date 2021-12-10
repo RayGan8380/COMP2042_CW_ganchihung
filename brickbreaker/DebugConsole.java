@@ -56,14 +56,6 @@ public class DebugConsole extends JDialog implements WindowListener{
         this.setFocusable(true);
     }
 
-
-    /*private void setLocation(){
-        int x = ((owner.getWidth() - this.getWidth()) / 2) + owner.getX();
-        int y = ((owner.getHeight() - this.getHeight()) / 2) + owner.getY();
-        this.setLocation(x,y);
-    }*/
-
-
     @Override
     public void windowOpened(WindowEvent windowEvent) {
 
@@ -91,7 +83,6 @@ public class DebugConsole extends JDialog implements WindowListener{
 
     @Override
     public void windowActivated(WindowEvent windowEvent) {
-        //setLocation();
         this.setLocationRelativeTo(null);
         Ball b = wall.ball;
         debugPanel.setValues(b.getSpeedX(),b.getSpeedY());
