@@ -29,14 +29,14 @@ public class Player {
     private static final int DEF_MOVE_AMOUNT = 5;
 
     private Rectangle playerFace;
-    private Point ballPoint;
+    private Point center;
     private int moveAmount;
     private int min;
     private int max;
 
 
     public Player(Point ballPoint,int width,int height,Rectangle container) {
-        this.ballPoint = ballPoint;
+        this.center = ballPoint;
         moveAmount = 0;
         playerFace = makeRectangle(width, height);
         min = container.x + (width / 2);
@@ -45,7 +45,7 @@ public class Player {
     }
 
     private Rectangle makeRectangle(int width,int height){
-        Point p = new Point((int)(ballPoint.getX() - (width / 2)),(int)ballPoint.getY());
+        Point p = new Point((int)(center.getX() - (width / 2)),(int)center.getY());
         return  new Rectangle(p,new Dimension(width,height));
     }
 
@@ -54,11 +54,11 @@ public class Player {
     }
 
     public void move(){
-        double x = ballPoint.getX() + moveAmount;
+        double x = center.getX() + moveAmount;
         if(x < min || x > max)
             return;
-        ballPoint.setLocation(x,ballPoint.getY());
-        playerFace.setLocation(ballPoint.x - (int)playerFace.getWidth()/2,ballPoint.y);
+        center.setLocation(x,center.getY());
+        playerFace.setLocation(center.x - (int)playerFace.getWidth()/2,center.y);
     }
 
     public void moveLeft(){
@@ -78,7 +78,7 @@ public class Player {
     }
 
     public void moveTo(Point p){
-        ballPoint.setLocation(p);
-        playerFace.setLocation(ballPoint.x - (int)playerFace.getWidth()/2,ballPoint.y);
+        center.setLocation(p);
+        playerFace.setLocation(center.x - (int)playerFace.getWidth()/2,center.y);
     }
 }

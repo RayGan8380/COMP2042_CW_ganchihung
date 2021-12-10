@@ -2,21 +2,39 @@ package brickbreaker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
+import java.io.*;
+import static java.lang.Integer.valueOf;
+
 
 public class Leaderboard extends JComponent implements MouseListener, MouseMotionListener {
     private GameFrame owner;
-
     private static final String BACK_TEXT = "Back";
 
     private Rectangle leaderboardFace;
+    private Rectangle leaderboardFrame;
     private Rectangle backButton;
 
+    private int[] leaderboardPos  = {0,0,0,0,0,0};
+    private int currentScore = 0;
+    private String line = "";
+    private String[] values;
+    private Timer leaderboardUpdate;
+
     private Font buttonFont;
+    private Font textFont;
+    private Font scoreFont;
+
+
+    private static final Color DARKBLUE = new Color(0,76,153);
+    private static final Color WHEAT = new Color(255,229,204);
+    private static final Color DARKORANGE = new Color(204,102,0);
+    private static final Color LIGHTORANGE = new Color(153,76,0);
 
     private boolean backClicked;
 
@@ -26,25 +44,71 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
 
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
-
         this.owner = owner;
         leaderboardFace = new Rectangle(new Point(0,0), area);
+        leaderboardFrame = new Rectangle(new Point(10,10), new Dimension(430,280));
         this.setPreferredSize(area);
 
-       buttonFont = new Font("Monospaced",Font.BOLD,20);
-       backButton = new Rectangle (new Dimension(area.width/3, area.height/12));
+        //create file or access previous file
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("Game_High_Scores.txt"));
+            System.out.println("Reed file");
+            line = reader.readLine();
+            values = line.split(",");
+
+            for (int i = 0; i<6; i++){
+            leaderboardPos[i] = valueOf(values[i]);
+            }
+            reader.close();
+            repaint();
+        }catch(FileNotFoundException e) {
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter("Game_High_Scores.txt"));
+                System.out.println("Write file");
+                for (int i = 0; i < 6; i++)
+                    writer.write(leaderboardPos[i] + ",");
+                writer.close();
+
+            } catch (IOException c) {
+                c.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        buttonFont = new Font("Monospaced",Font.BOLD,20);
+        textFont = new Font("Monospaced", Font.BOLD, 30);
+        scoreFont = new Font("Monospaced", Font.ITALIC, 30);
+        backButton = new Rectangle (new Dimension(area.width/3, area.height/12));
+
+        repaint();
 
     }
 
     public void paint(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(new Color(0, 255, 255));
+        FontRenderContext frc = g2d.getFontRenderContext();
+
+        drawContainer(g2d, frc);
+        drawButton(g2d, frc);
+        drawContent(g2d, frc);
+
+    }
+
+    private void drawContainer(Graphics2D g2d, FontRenderContext frc){
+        g2d.setColor(DARKBLUE);
         g2d.fill(leaderboardFace);
 
-        FontRenderContext frc = g2d.getFontRenderContext();
+        g2d.setColor(WHEAT);
+        g2d.fill(leaderboardFrame);
+
+    }
+
+    private void drawButton(Graphics2D g2d, FontRenderContext frc){
         Rectangle2D backRect = buttonFont.getStringBounds(BACK_TEXT,frc);                     //back button
+
         int centerX = (leaderboardFace.width - backButton.width) / 2;
-        int centerY = (leaderboardFace.height - backButton.height) / 2;;
+        int centerY = (int) ((leaderboardFace.height - backButton.height) * 0.95);
         backButton.setLocation(centerX,centerY);
 
         centerX = (int)(leaderboardFace.getWidth() - backRect.getWidth()) / 2;
@@ -65,15 +129,107 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
             g2d.draw(backButton);
             g2d.drawString(BACK_TEXT,centerX,centerY);
         }
+    }
+
+    private void drawContent(Graphics2D g2d, FontRenderContext frc) {
+        Rectangle2D leaderboardRect = textFont.getStringBounds("LEADERBOARD",frc);
+
+        int centerX,centerY;                                                          //leaderboard title
+
+        centerX = (int)(leaderboardFrame.getWidth() - leaderboardRect.getWidth()) / 2;
+        centerY = (int)(leaderboardFrame.getHeight() / 7);
+
+        g2d.setColor(DARKBLUE);
+        g2d.setFont(textFont);
+        g2d.drawString("LEADERBOARD",centerX,centerY);
+
+        String[] Pos = {"1", "2", "3", "4", "5"};
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("Game_High_Scores.txt"));
+            System.out.println("Reed file");
+            line = reader.readLine();
+            values = line.split(",");
+
+            for ( int i = 0; i<6; i++){
+                leaderboardPos[i] = valueOf(values[i]);
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for(int i = 0; i <6; i++ ) {
+            setFont(scoreFont);
+
+            if (i == 0 )
+                g2d.setColor(DARKORANGE);
+            else if(i == 1)
+                g2d.setColor(DARKBLUE);
+            else
+                g2d.setColor(LIGHTORANGE);
+
+            Rectangle2D scoreRect = textFont.getStringBounds(values[i],frc);
+            centerX = (int)((leaderboardFrame.getWidth() - scoreRect.getWidth()) / 1.5);
+            centerY += 35;
+            g2d.drawString( values[i], centerX, centerY);
+
+            centerX = (int)(leaderboardFrame.getWidth() / 3);
+            if (i == 5){
+                scoreRect = textFont.getStringBounds("Current:",frc);
+                centerX = (int)((leaderboardFrame.getWidth() - scoreRect.getWidth()) / 3.3);
+                g2d.drawString( "Current:", centerX, centerY);
+            }else
+                g2d.drawString( Pos[i], centerX, centerY);
+        }
 
     }
 
+    public void pointsCompare(int newPoints){
+        currentScore = newPoints;
+        leaderboardPos[5] = newPoints;
+        for (int i = 0; i<6; i++ ){                         //arrange points in descending order
+            for(int j = 0; j<6; j++){
+                if (leaderboardPos[i] > leaderboardPos[j]) {
+                    int temp = leaderboardPos[j];
+                    leaderboardPos[j] = leaderboardPos[i];
+                    leaderboardPos[i] = temp;
+                }
+            }
+        }
+        leaderboardPos[5] = currentScore;
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("Game_High_Scores.txt"));
+
+            for (int i = 0; i < 6; i++)
+                writer.write(leaderboardPos[i] + ",");
+            writer.close();
+
+            BufferedReader reader = new BufferedReader(new FileReader("Game_High_Scores.txt"));
+            System.out.println("Reed file");
+            line = reader.readLine();
+            values = line.split(",");
+
+            for (int i = 0; i<6; i++){
+                leaderboardPos[i] = valueOf(values[i]);
+            }
+            reader.close();
+
+        }catch (IOException c){
+            c.printStackTrace();
+        }
+        repaint();
+
+    }
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint();
-        if(backButton.contains(p)){
-            owner.enableHomeMenu();
-
+        if(backButton.contains(p)) {
+            if (owner.getClickedFromGameOver()) {
+                owner.enableGameBoard();
+                owner.setClickedFromGameOver(false);
+                repaint();
+            } else
+                owner.enableHomeMenu();
+                repaint();
         }
     }
 

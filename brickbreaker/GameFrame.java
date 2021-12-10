@@ -33,8 +33,9 @@ public class GameFrame extends JFrame implements WindowFocusListener {
     private Leaderboard leaderboard;
 
     private boolean gaming;
+    private boolean clickedFromGameOver;
 
-    public GameFrame(){
+    public GameFrame() {
         super();
 
         gaming = false;
@@ -66,6 +67,7 @@ public class GameFrame extends JFrame implements WindowFocusListener {
     public void enableGameBoard() {
         this.dispose();
         this.remove(homeMenu);
+        this.remove(leaderboard);
         this.add(gameBoard, BorderLayout.CENTER);
         this.setUndecorated(false);
         initialize();
@@ -97,13 +99,20 @@ public class GameFrame extends JFrame implements WindowFocusListener {
     public void enableLeaderboard(){
         this.dispose();
         this.remove(homeMenu);
+        this.remove(gameBoard);
         this.add(leaderboard, BorderLayout.CENTER);
         this.setUndecorated(false);
         initialize();
         /*to avoid problems with graphics focus controller is added here*/
         this.addWindowFocusListener(this);
     }
-
+    public boolean getClickedFromGameOver(){
+        return clickedFromGameOver;
+    }
+    public boolean setClickedFromGameOver(boolean ClickedFromGameOver){
+        clickedFromGameOver = ClickedFromGameOver;
+        return clickedFromGameOver;
+    }
 
     @Override
     public void windowGainedFocus(WindowEvent windowEvent) {

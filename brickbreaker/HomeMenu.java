@@ -57,7 +57,6 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
     private BufferedImage backgroundImage;
 
     private BasicStroke borderStoke;
-    //private BasicStroke borderStoke_noDashes;
 
     private Font greetingsFont;
     private Font gameTitleFont;
@@ -113,7 +112,7 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
     }
 
 
-    public void drawMenu(Graphics2D g2d){
+    private void drawMenu(Graphics2D g2d){
 
         drawContainer(g2d);
 

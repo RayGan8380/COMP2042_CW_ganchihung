@@ -33,21 +33,21 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     private static final int TEXT_SIZE = 30;
     private static final Color MENU_COLOR = new Color(0,255,0);
 
-
     private static final int DEF_WIDTH = 600;
     private static final int DEF_HEIGHT = 450;
-
     private static final Color BG_COLOR = Color.WHITE;
 
     private Timer gameTimer;
 
     private Wall wall;
+    private Leaderboard leaderboard;
 
     private String message;
 
     private boolean showPauseMenu;
 
     private Font menuFont;
+    private Font timeFont;
 
     private Rectangle continueButtonRect;
     private Rectangle exitButtonRect;
@@ -59,12 +59,13 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
     public GameBoard(JFrame owner){
         super();
+        leaderboard = new Leaderboard((GameFrame) owner, new Dimension(450,300));
 
         strLen = 0;
         showPauseMenu = false;
 
         menuFont = new Font("Monospaced",Font.PLAIN,TEXT_SIZE);
-
+        timeFont = new Font("Monospace",Font.PLAIN, 15);
 
         this.initialize();
         message = "";
@@ -73,14 +74,22 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         debugConsole = new DebugConsole(owner,wall,this);
         //initialize the first level
         wall.nextLevel();
+        wall.ballReset();
+        wall.timePointsReset();
 
         gameTimer = new Timer(10,e ->{
+            wall.timePointCalculation();
             wall.move();
             wall.findImpacts();
+            wall.newPoints_string = String.format("%04d", wall.newPoints);
             message = String.format("Bricks: %d Balls %d",wall.getBrickCount(),wall.getBallCount());
             if(wall.isBallLost()){
                 if(wall.ballEnd()){
+                    ((GameFrame) owner).setClickedFromGameOver(true);
+                    leaderboard.pointsCompare(wall.newPoints);
+                    ((GameFrame) owner).enableLeaderboard();
                     wall.wallReset();
+                    wall.timePointsReset();
                     message = "Game over";
                 }
                 wall.ballReset();
@@ -93,19 +102,20 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                     wall.ballReset();
                     wall.wallReset();
                     wall.nextLevel();
+                    ((GameFrame) owner).setClickedFromGameOver(true);
+                    leaderboard.pointsCompare(wall.newPoints);
+                    ((GameFrame) owner).enableLeaderboard();
+                    wall.timePointsReset();
                 }
                 else{
                     message = "ALL WALLS DESTROYED";
                     gameTimer.stop();
+                    leaderboard.pointsCompare(wall.newPoints);
                 }
             }
-
             repaint();
         });
-
     }
-
-
 
     private void initialize(){
         this.setPreferredSize(new Dimension(DEF_WIDTH,DEF_HEIGHT));
@@ -116,7 +126,6 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         this.addMouseMotionListener(this);
     }
 
-
     public void paint(Graphics g){
 
         Graphics2D g2d = (Graphics2D) g;
@@ -124,7 +133,11 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         clear(g2d);
 
         g2d.setColor(Color.BLUE);
-        g2d.drawString(message,250,225);
+        g2d.drawString(message,250,250);
+
+        g2d.setFont(timeFont);
+        g2d.drawString("Time: "+ wall.minutes_string + ":" + wall.seconds_string, 250, 225);
+        g2d.drawString("Points: "+ wall.newPoints_string, 250, 180);
 
         drawBall(wall.ball,g2d);
 
@@ -281,10 +294,12 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                 break;
             case KeyEvent.VK_SPACE:
                 if(!showPauseMenu)
-                    if(gameTimer.isRunning())
+                    if(gameTimer.isRunning()){
                         gameTimer.stop();
-                    else
+                        repaint();}
+                    else{
                         gameTimer.start();
+                        repaint();}
                 break;
             case KeyEvent.VK_F1:
                 if(keyEvent.isAltDown() && keyEvent.isShiftDown())
@@ -310,6 +325,8 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         }
         else if(restartButtonRect.contains(p)){
             message = "Restarting Game...";
+            wall.timePointsReset();
+            gameTimer.stop();
             wall.ballReset();
             wall.wallReset();
             showPauseMenu = false;

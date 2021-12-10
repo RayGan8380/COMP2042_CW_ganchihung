@@ -25,7 +25,6 @@ import java.util.Random;
 public class Wall {
 
     private static final int LEVELS_COUNT = 4;
-
     private static final int CLAY = 1;
     private static final int STEEL = 2;
     private static final int CEMENT = 3;
@@ -33,12 +32,22 @@ public class Wall {
     private Random rnd;
     private Rectangle area;
 
+    private Leaderboard leaderboard;
+    private GameFrame owner;
+
     Brick[] bricks;
     Ball ball;
     Player player;
 
     private Brick[][] levels;
     private int level;
+    public int elapsedTime = 0;
+    private int seconds = 0;
+    private int minutes = 0;
+    public int newPoints = 1450;
+    public String seconds_string = String.format("%02d", seconds);
+    public String minutes_string = String.format("%02d", minutes);
+    public String newPoints_string = String.format("%04d", newPoints);
 
     private Point startPoint;
     private int brickCount;
@@ -46,6 +55,8 @@ public class Wall {
     private boolean ballLost;
 
     public Wall(Rectangle drawArea, int brickCount, int lineCount, double brickDimensionRatio, Point ballPos){
+
+
 
         this.startPoint = new Point(ballPos);
 
@@ -60,10 +71,10 @@ public class Wall {
         makeBall(ballPos);
         int speedX,speedY;
         do{
-            speedX = rnd.nextInt(5) - 2;
+            speedX = 500;//rnd.nextInt(5) - 2;
         }while(speedX == 0);
         do{
-            speedY = -rnd.nextInt(3);
+            speedY = 500;// -rnd.nextInt(3);
         }while(speedY == 0);
 
         ball.setSpeed(speedX,speedY);
@@ -187,6 +198,7 @@ public class Wall {
             * because for every brick program checks for horizontal and vertical impacts
             */
             brickCount--;
+            newPoints += 50;
         }
         else if(impactBorder()) {
             ball.reverseX();
@@ -196,11 +208,12 @@ public class Wall {
         }
         else if(ball.getPosition().getY() > area.getY() + area.getHeight()){
             ballCount--;
+            newPoints -= 150;
             ballLost = true;
         }
     }
 
-    private boolean impactWall(){
+    public boolean impactWall(){
         for(Brick b : bricks){
             switch(b.findImpact(ball)) {
                 //Vertical Impact
@@ -307,6 +320,32 @@ public class Wall {
                 throw  new IllegalArgumentException(String.format("Unknown Type:%d\n",type));
         }
         return  out;
+    }
+    public void timePointCalculation(){
+        elapsedTime +=10;
+        seconds = (elapsedTime / 1000) % 60;
+        minutes = (elapsedTime / 60000) % 60;
+
+        float elapsedTimeInFloat = elapsedTime;
+        if (elapsedTimeInFloat % 1000 == 0 )
+            newPoints -= 2;
+
+        if (newPoints < 0)
+            newPoints = 0;
+
+        newPoints_string = String.format("%04d", newPoints);
+        seconds_string = String.format("%02d", seconds);
+        minutes_string = String.format("%02d", minutes);
+    }
+
+    public void timePointsReset(){
+        elapsedTime =0;
+        minutes = 0;
+        seconds = 0;
+        newPoints = 1450;
+        newPoints_string = String.format("%04d", newPoints);
+        seconds_string = String.format("%02d", seconds);
+        minutes_string = String.format("%02d", minutes);
     }
 
 }
