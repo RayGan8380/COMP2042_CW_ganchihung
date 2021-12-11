@@ -12,7 +12,9 @@ import javax.swing.*;
 public class InfoScreen extends JComponent implements MouseListener, MouseMotionListener {
     private GameFrame owner;
 
-    private static final String  INFO = "Press A key will move left,Press D key will move right,Press SPACE key will start,and pause the game,Press ESC key will enter Menu,Press SHIFT + ALT + F1 key,will enter Settings";
+    private static final String  INFO = "Press A key will move left,Press D key will move right" +
+            ",Press SPACE key will start,and pause the game,Press ESC key will enter Menu" +
+            ",Press SHIFT + ALT + F1 key,will enter Settings";
     private static final String BACK_TEXT = "Back";
     private Font infoFont;
 
@@ -21,7 +23,11 @@ public class InfoScreen extends JComponent implements MouseListener, MouseMotion
 
     private boolean backClicked;
 
-
+    /**
+     * Constructor of InfoScreen
+     * @param owner frame
+     * @param area frame size
+     */
     public InfoScreen(GameFrame owner, Dimension area){
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -48,12 +54,21 @@ public class InfoScreen extends JComponent implements MouseListener, MouseMotion
 
     }
 
+    /**
+     * Draw the container
+     * @param g2d component used to draw
+     */
     private void drawContainer(Graphics2D g2d){
         g2d.setColor(new Color(255, 229, 204));
         g2d.fill(infoFace);
 
     }
 
+    /**
+     * Draw the button
+     * @param g2d component used to draw
+     * @param frc container for the information needed to correctly measure text.
+     */
     private void drawButton(Graphics2D g2d, FontRenderContext frc){                              //back button
 
         Rectangle2D backRect = infoFont.getStringBounds(BACK_TEXT,frc);
@@ -81,6 +96,11 @@ public class InfoScreen extends JComponent implements MouseListener, MouseMotion
         }
 
     }
+    /**
+     * Draw the text
+     * @param g2d component used to draw
+     * @param frc container for the information needed to correctly measure text.
+     */
     private void drawText(Graphics2D g2d, FontRenderContext frc){                               //print info text
         g2d.setColor(new Color (0, 204,0));
         g2d.setFont(infoFont);

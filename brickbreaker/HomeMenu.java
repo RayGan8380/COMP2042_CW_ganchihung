@@ -68,6 +68,11 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
     private boolean leaderboardClicked;
     private boolean infoClicked;
 
+    /**
+     * Consturctor of the HomeMenu
+     * @param owner frame
+     * @param area frame size
+     */
 
     public HomeMenu(GameFrame owner,Dimension area){
 
@@ -102,7 +107,6 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
 
     }
 
-
     public void paint(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
 
@@ -111,6 +115,10 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
         drawButton(g2d);
     }
 
+    /**
+     * Draw the container
+     * @param g2d component used to draw
+     */
     private void drawContainer(Graphics2D g2d){
 
         g2d.drawImage(backgroundImage,0,0,450,300,null);
@@ -128,7 +136,10 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
         g2d.setStroke(tmp);
 
     }
-
+    /**
+     * Draw the text
+     * @param g2d component used to draw
+     */
     private void drawText(Graphics2D g2d){
 
         g2d.setColor(TEXT_COLOR);
@@ -161,7 +172,10 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
 
 
     }
-
+    /**
+     * Draw the button
+     * @param g2d component used to draw
+     */
     private void drawButton(Graphics2D g2d){
 
         FontRenderContext frc = g2d.getFontRenderContext();

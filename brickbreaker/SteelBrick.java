@@ -33,6 +33,11 @@ public class SteelBrick extends Brick {
     private Random rnd;
     private Shape brickFace;
 
+    /**
+     * Constructor of SteelBrick
+     * @param point preferred position
+     * @param size preferred size of the brick
+     */
     public SteelBrick(Point point, Dimension size){
         super(NAME,point,size,DEF_BORDER,DEF_INNER,STEEL_STRENGTH);
         rnd = new Random();
@@ -50,6 +55,12 @@ public class SteelBrick extends Brick {
         return brickFace;
     }
 
+    /**
+     * Check whether the brick is getting impact from ball
+     * @param point the point where brick get hit
+     * @param dir the direction of crack
+     * @return boolean value form isBroken
+     */
     public  boolean setImpact(Point2D point , int dir){
         if(super.isBroken())
             return false;
@@ -57,6 +68,10 @@ public class SteelBrick extends Brick {
         return  super.isBroken();
     }
 
+    /**
+     * generating random number to see whether it is less then
+     * the broken probability
+     */
     public void impact(){
         if(rnd.nextDouble() < STEEL_PROBABILITY){
             super.impact();

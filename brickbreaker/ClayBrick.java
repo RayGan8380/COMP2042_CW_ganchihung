@@ -15,11 +15,11 @@ public class ClayBrick extends Brick {
     private static final Color DEF_BORDER = Color.GRAY;
     private static final int CLAY_STRENGTH = 1;
 
-
-
-
-
-
+    /**
+     * Constructor of the ClayBrick
+     * @param point the preferred position
+     * @param size the preferred brick size
+     */
     public ClayBrick(Point point, Dimension size){
         super(NAME,point,size,DEF_BORDER,DEF_INNER,CLAY_STRENGTH);
     }

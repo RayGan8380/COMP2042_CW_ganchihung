@@ -36,6 +36,11 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
 
     private boolean backClicked;
 
+    /**
+     * Constructor of LeaderBoard
+     * @param owner frame
+     * @param area frame size
+     */
     public Leaderboard(GameFrame owner, Dimension area){
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -90,7 +95,10 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
         drawContent(g2d, frc);
 
     }
-
+    /**
+     * Draw the container
+     * @param g2d component used to draw
+     */
     private void drawContainer(Graphics2D g2d){
         g2d.setColor(DARKBLUE);
         g2d.fill(leaderboardFace);
@@ -99,7 +107,11 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
         g2d.fill(leaderboardFrame);
 
     }
-
+    /**
+     * Draw the button
+     * @param g2d component used to draw
+     * @param frc container for the information needed to correctly measure text.
+     */
     private void drawButton(Graphics2D g2d, FontRenderContext frc){
         Rectangle2D backRect = buttonFont.getStringBounds(BACK_TEXT,frc);                     //back button
 
@@ -126,7 +138,11 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
             g2d.drawString(BACK_TEXT,centerX,centerY);
         }
     }
-
+    /**
+     * Draw the text
+     * @param g2d component used to draw
+     * @param frc container for the information needed to correctly measure text.
+     */
     private void drawContent(Graphics2D g2d, FontRenderContext frc) {
         Rectangle2D leaderboardRect = textFont.getStringBounds("LEADERBOARD",frc);
 
@@ -141,7 +157,6 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
 
         try {                                                                         //read file to update
             BufferedReader reader = new BufferedReader(new FileReader("Game_High_Scores.txt"));
-            System.out.println("Reed file");
             line = reader.readLine();
             values = line.split(",");
 
@@ -180,6 +195,11 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
 
     }
 
+    /**
+     * pass in the current player's score and arrange it
+     * in descending order with previous high scores
+     * @param newPoints current player's score
+     */
     public void pointsCompare(int newPoints){
         currentScore = newPoints;
         leaderboardRanking[5] = newPoints;
@@ -203,7 +223,6 @@ public class Leaderboard extends JComponent implements MouseListener, MouseMotio
             writer.close();
 
             BufferedReader reader = new BufferedReader(new FileReader("Game_High_Scores.txt"));
-            System.out.println("Reed file");
             line = reader.readLine();
             values = line.split(",");
 

@@ -24,7 +24,6 @@ import java.awt.event.WindowFocusListener;
 
 
 public class GameFrame extends JFrame implements WindowFocusListener {
-
     private static final String DEF_TITLE = "Brick Destroy";
 
     private GameBoard gameBoard;
@@ -34,6 +33,10 @@ public class GameFrame extends JFrame implements WindowFocusListener {
 
     private boolean gaming;
     private boolean clickedFromGameOver;
+
+    /**
+     * Constructs and initializes different JComponents
+     */
 
     public GameFrame() {
         super();
@@ -56,6 +59,9 @@ public class GameFrame extends JFrame implements WindowFocusListener {
 
     }
 
+    /**
+     * Initializes the JFrame
+     */
     public void initialize() {
         this.setTitle(DEF_TITLE);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -64,6 +70,9 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         this.setVisible(true);
     }
 
+    /**
+     *Add the GameBoard to the frame
+     */
     public void enableGameBoard() {
         this.dispose();
         this.remove(homeMenu);
@@ -76,6 +85,9 @@ public class GameFrame extends JFrame implements WindowFocusListener {
 
     }
 
+    /**
+     * Add the InfoScreem to the frame
+     */
     public void enableInfoScreen(){
         this.dispose();
         this.remove(homeMenu);
@@ -86,6 +98,9 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         this.addWindowFocusListener(this);
     }
 
+    /**
+     * Add the HomeMenu to the frame
+     */
     public void enableHomeMenu(){
         this.dispose();
         this.remove(infoScreen);
@@ -96,6 +111,10 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         /*to avoid problems with graphics focus controller is added here*/
         this.addWindowFocusListener(this);
     }
+
+    /**
+     * Add the LeaderBoard to the frame
+     */
     public void enableLeaderboard(){
         this.dispose();
         this.remove(homeMenu);
@@ -106,10 +125,20 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         /*to avoid problems with graphics focus controller is added here*/
         this.addWindowFocusListener(this);
     }
+
+    /**
+     * Check whether the back button is clicked from where
+     * @return the status of getClickedFromGameOver
+     */
     public boolean getClickedFromGameOver(){
 
         return clickedFromGameOver;
     }
+
+    /**
+     *Set the clickedFromGameOver to true or false
+     * @param ClickedFromGameOver is the true or false value
+     */
     public void setClickedFromGameOver(boolean ClickedFromGameOver){
         clickedFromGameOver = ClickedFromGameOver;
     }

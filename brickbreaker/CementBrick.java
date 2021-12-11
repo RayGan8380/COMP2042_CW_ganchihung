@@ -16,7 +16,11 @@ public class CementBrick extends Brick {
     private Crack crack;
     private Shape brickFace;
 
-
+    /**
+     * Constructor of CementBrick
+     * @param point the preferred position
+     * @param size the preferred brick size
+     */
     public CementBrick(Point point, Dimension size){
         super(NAME,point,size,DEF_BORDER,DEF_INNER,CEMENT_STRENGTH);
         crack = new Crack(DEF_CRACK_DEPTH,DEF_STEPS);
@@ -47,6 +51,9 @@ public class CementBrick extends Brick {
         return brickFace;
     }
 
+    /**
+     * To update the brick's condition
+     */
     private void updateBrick(){
         if(!super.isBroken()){
             GeneralPath gp = crack.draw();
@@ -55,6 +62,9 @@ public class CementBrick extends Brick {
         }
     }
 
+    /**
+     * Reset the brick's condition
+     */
     public void repair(){
         super.repair();
         crack.reset();
