@@ -8,7 +8,7 @@
 - At GameFrame.class, line 72 to line 76 (private void autoLocate())
 - At DebugConsole.class, line 60 to line 64  (private void setLocation())
 5. Most of the classes are redesigned in MVC pattern.
-6.
+
 
 ## Additions
 1. Crearted new class called InfoScreen
