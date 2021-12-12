@@ -17,6 +17,7 @@
  */
 package brickbreaker;
 
+import brick.Brick;
 import ball.Ball;
 import ball.BallModel;
 import player.Player;

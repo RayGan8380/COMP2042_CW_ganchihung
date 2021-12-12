@@ -17,6 +17,12 @@
  */
 package brickbreaker;
 
+import brick.Brick;
+import brick.CementBrick;
+import brick.ClayBrick;
+import brick.SteelBrick;
+import brick.TitaniumBrick;
+import brick.Crack;
 import ball.Ball;
 import ball.BallController;
 import ball.BallModel;
@@ -242,8 +248,8 @@ public class Wall {
         }
         else if(impactWall()){
             /*for efficiency reverse is done into method impactWall
-            * because for every brick program checks for horizontal and vertical impacts
-            */
+             * because for every brick program checks for horizontal and vertical impacts
+             */
             brickCount--;
             newPoints += 50;
         }
@@ -270,18 +276,18 @@ public class Wall {
                 //Vertical Impact
                 case Brick.UP_IMPACT:
                     BallModel.reverseY();
-                    return b.setImpact(ball.down, Brick.Crack.UP);
+                    return b.setImpact(ball.down, Crack.UP);
                 case Brick.DOWN_IMPACT:
                     BallModel.reverseY();
-                    return b.setImpact(ball.up,Brick.Crack.DOWN);
+                    return b.setImpact(ball.up,Crack.DOWN);
 
                 //Horizontal Impact
                 case Brick.LEFT_IMPACT:
                     BallModel.reverseX();
-                    return b.setImpact(ball.right,Brick.Crack.RIGHT);
+                    return b.setImpact(ball.right,Crack.RIGHT);
                 case Brick.RIGHT_IMPACT:
                     BallModel.reverseX();
-                    return b.setImpact(ball.left,Brick.Crack.LEFT);
+                    return b.setImpact(ball.left,Crack.LEFT);
             }
         }
         return false;

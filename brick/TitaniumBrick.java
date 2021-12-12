@@ -1,4 +1,4 @@
-package brickbreaker;
+package brick;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

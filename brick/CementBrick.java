@@ -1,4 +1,4 @@
-package brickbreaker;
+package brick;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
@@ -32,13 +32,12 @@ public class CementBrick extends Brick {
         return new Rectangle(pos,size);
     }
 
-    @Override
-    public boolean setImpact(Point2D point, int dir) {
+    public boolean setImpact(Point2D point, int dir, Brick b) {
         if(super.isBroken())
             return false;
         super.impact();
         if(!super.isBroken()){
-            crack.makeCrack(point,dir);
+            crack.makeCrack(point,dir,b);
             updateBrick();
             return false;
         }
@@ -68,6 +67,6 @@ public class CementBrick extends Brick {
     public void repair(){
         super.repair();
         crack.reset();
-        brickFace = super.brickFace;
+        brickFace =super.brickFace;
     }
 }
