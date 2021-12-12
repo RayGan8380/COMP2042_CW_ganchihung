@@ -17,6 +17,10 @@
  */
 package brickbreaker;
 
+import ball.Ball;
+import ball.BallModel;
+import player.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -29,6 +33,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     private static final String CONTINUE = "Continue";
     private static final String RESTART = "Restart";
     private static final String EXIT = "Exit";
+    private static final String HOMEMENU = "Home Menu";
     private static final String PAUSE = "Pause Menu";
     private static final int TEXT_SIZE = 30;
     private static final Color MENU_COLOR = new Color(0,255,0);
@@ -41,6 +46,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
     private Wall wall;
     private Leaderboard leaderboard;
+    private GameFrame gameFrame;
 
     private String message;
 
@@ -52,6 +58,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     private Rectangle continueButtonRect;
     private Rectangle exitButtonRect;
     private Rectangle restartButtonRect;
+    private Rectangle homeMenuButtonRect;
     private int strLen;
 
     private DebugConsole debugConsole;
@@ -63,7 +70,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     public GameBoard(JFrame owner){
         super();
         leaderboard = new Leaderboard((GameFrame) owner, new Dimension(450,300));
-
+        gameFrame = (GameFrame) owner;
         strLen = 0;
         showPauseMenu = false;
 
@@ -88,9 +95,9 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
             message = String.format("Bricks: %d Balls %d",wall.getBrickCount(),wall.getBallCount());
             if(wall.isBallLost()){
                 if(wall.ballEnd()){
-                    ((GameFrame) owner).setClickedFromGameOver(true);
+                    gameFrame.setClickedFromGameOver(true);
                     leaderboard.pointsCompare(wall.newPoints);
-                    ((GameFrame) owner).enableLeaderboard();
+                    gameFrame.enableLeaderboard();
                     wall.wallReset();
                     wall.timePointsReset();
                     message = "Game over";
@@ -105,9 +112,9 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                     wall.ballReset();
                     wall.wallReset();
                     wall.nextLevel();
-                    ((GameFrame) owner).setClickedFromGameOver(true);
+                    gameFrame.setClickedFromGameOver(true);
                     leaderboard.pointsCompare(wall.newPoints);
-                    ((GameFrame) owner).enableLeaderboard();
+                    gameFrame.enableLeaderboard();
                     wall.timePointsReset();
                 }
                 else{
@@ -196,12 +203,12 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     private void drawBall(Ball ball,Graphics2D g2d){
         Color tmp = g2d.getColor();
 
-        Shape s = ball.getBallFace();
+        Shape s = BallModel.getBallFace();
 
-        g2d.setColor(ball.getInnerColor());
+        g2d.setColor(BallModel.getInnerColor());
         g2d.fill(s);
 
-        g2d.setColor(ball.getBorderColor());
+        g2d.setColor(BallModel.getBorderColor());
         g2d.draw(s);
 
         g2d.setColor(tmp);
@@ -287,7 +294,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
         g2d.drawString(CONTINUE,x,y);
 
-        y *= 2;
+        y += 100;
 
         if(restartButtonRect == null){
             restartButtonRect = (Rectangle) continueButtonRect.clone();
@@ -296,7 +303,16 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
         g2d.drawString(RESTART,x,y);
 
-        y *= 3.0/2;
+        y += 100;
+
+        if(homeMenuButtonRect == null){
+            homeMenuButtonRect = (Rectangle) restartButtonRect.clone();
+            homeMenuButtonRect.setLocation(x,y-restartButtonRect.height);
+        }
+
+        g2d.drawString(HOMEMENU,x,y);
+
+        y += 100;
 
         if(exitButtonRect == null){
             exitButtonRect = (Rectangle) continueButtonRect.clone();
@@ -319,10 +335,10 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     public void keyPressed(KeyEvent keyEvent) {
         switch(keyEvent.getKeyCode()){
             case KeyEvent.VK_A:
-                wall.player.moveLeft();
+                wall.playerController.moveLeft();
                 break;
             case KeyEvent.VK_D:
-                wall.player.movRight();
+                wall.playerController.moveRight();
                 break;
             case KeyEvent.VK_ESCAPE:
                 showPauseMenu = !showPauseMenu;
@@ -342,13 +358,13 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
                 if(keyEvent.isAltDown() && keyEvent.isShiftDown())
                     debugConsole.setVisible(true);
             default:
-                wall.player.stop();
+                wall.playerController.stop();
         }
     }
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {
-        wall.player.stop();
+        wall.playerController.stop();
     }
 
     @Override
@@ -367,6 +383,13 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
             wall.ballReset();
             wall.wallReset();
             showPauseMenu = false;
+            repaint();
+        }
+        else if(homeMenuButtonRect.contains(p)){
+            wall.timePointsReset();
+            gameTimer.stop();
+            showPauseMenu = false;
+            gameFrame.enableHomeMenu();
             repaint();
         }
         else if(exitButtonRect.contains(p)){
@@ -404,7 +427,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     public void mouseMoved(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint();
         if(exitButtonRect != null && showPauseMenu) {
-            if (exitButtonRect.contains(p) || continueButtonRect.contains(p) || restartButtonRect.contains(p))
+            if (exitButtonRect.contains(p) || continueButtonRect.contains(p) || restartButtonRect.contains(p) || homeMenuButtonRect.contains(p))
                 this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             else
                 this.setCursor(Cursor.getDefaultCursor());

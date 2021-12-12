@@ -105,6 +105,7 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         this.dispose();
         this.remove(infoScreen);
         this.remove(leaderboard);
+        this.remove(gameBoard);
         this.add(homeMenu, BorderLayout.CENTER);
         this.setUndecorated(false);
         initialize();

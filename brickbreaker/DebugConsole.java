@@ -17,6 +17,8 @@
  */
 package brickbreaker;
 
+import ball.Ball;
+import ball.BallModel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -89,7 +91,7 @@ public class DebugConsole extends JDialog implements WindowListener{
     public void windowActivated(WindowEvent windowEvent) {
         this.setLocationRelativeTo(null);
         Ball b = wall.ball;
-        debugPanel.setValues(b.getSpeedX(),b.getSpeedY());
+        debugPanel.setValues(BallModel.getSpeedX(), BallModel.getSpeedY());
     }
 
     @Override

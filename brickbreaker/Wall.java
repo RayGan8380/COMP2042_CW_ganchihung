@@ -17,6 +17,12 @@
  */
 package brickbreaker;
 
+import ball.Ball;
+import ball.BallController;
+import ball.BallModel;
+import ball.RubberBall;
+import player.Player;
+import player.PlayerController;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Random;
@@ -34,8 +40,9 @@ public class Wall {
     private Rectangle area;
 
     Brick[] bricks;
-    Ball ball;
-    Player player;
+    public Ball ball;
+    public Player player;
+    public PlayerController playerController;
 
     private Brick[][] levels;
     private int level;
@@ -81,7 +88,7 @@ public class Wall {
             speedY = rnd.nextInt(3);
         }while(speedY == 0);
 
-        ball.setSpeed(speedX,speedY);
+        BallModel.setSpeed(speedX,speedY);
 
         player = new Player((Point) ballPos.clone(),150,10, drawArea);
 
@@ -222,16 +229,16 @@ public class Wall {
      * Check the movement of player and ball
      */
     public void move(){
-        player.move();
-        ball.move();
+        PlayerController.move();
+        BallController.move();
     }
 
     /**
      * Check the impacts between ball and player or ball and bricks
      */
     public void findImpacts(){
-        if(player.impact(ball)){
-            ball.reverseY();
+        if(PlayerController.impact(ball)){
+            BallModel.reverseY();
         }
         else if(impactWall()){
             /*for efficiency reverse is done into method impactWall
@@ -241,12 +248,12 @@ public class Wall {
             newPoints += 50;
         }
         else if(impactBorder()) {
-            ball.reverseX();
+            BallModel.reverseX();
         }
-        else if(ball.getPosition().getY() < area.getY()){
-            ball.reverseY();
+        else if(BallModel.getPosition().getY() < area.getY()){
+            BallModel.reverseY();
         }
-        else if(ball.getPosition().getY() > area.getY() + area.getHeight()){
+        else if(BallModel.getPosition().getY() > area.getY() + area.getHeight()){
             ballCount--;
             newPoints -= 150;
             ballLost = true;
@@ -262,18 +269,18 @@ public class Wall {
             switch(b.findImpact(ball)) {
                 //Vertical Impact
                 case Brick.UP_IMPACT:
-                    ball.reverseY();
+                    BallModel.reverseY();
                     return b.setImpact(ball.down, Brick.Crack.UP);
                 case Brick.DOWN_IMPACT:
-                    ball.reverseY();
+                    BallModel.reverseY();
                     return b.setImpact(ball.up,Brick.Crack.DOWN);
 
                 //Horizontal Impact
                 case Brick.LEFT_IMPACT:
-                    ball.reverseX();
+                    BallModel.reverseX();
                     return b.setImpact(ball.right,Brick.Crack.RIGHT);
                 case Brick.RIGHT_IMPACT:
-                    ball.reverseX();
+                    BallModel.reverseX();
                     return b.setImpact(ball.left,Brick.Crack.LEFT);
             }
         }
@@ -286,7 +293,7 @@ public class Wall {
      * whether the ball hit the left or right border of the frame
      */
     private boolean impactBorder(){
-        Point2D p = ball.getPosition();
+        Point2D p = BallModel.getPosition();
         return ((p.getX() < area.getX()) ||(p.getX() > (area.getX() + area.getWidth())));
     }
 
@@ -318,8 +325,8 @@ public class Wall {
      * Reset to player, ball and ballLost boolean variable to initial state
      */
     public void ballReset(){
-        player.moveTo(startPoint);
-        ball.moveTo(startPoint);
+        PlayerController.moveTo(startPoint);
+        BallController.moveTo(startPoint);
         int speedX,speedY;
         do{
             speedX = rnd.nextInt(5) - 2;
@@ -328,7 +335,7 @@ public class Wall {
             speedY = -rnd.nextInt(3);
         }while(speedY == 0);
 
-        ball.setSpeed(speedX,speedY);
+        BallModel.setSpeed(speedX,speedY);
         ballLost = false;
     }
 
@@ -380,14 +387,14 @@ public class Wall {
      * @param s the value of speed of x
      */
     public void setBallXSpeed(int s){
-        ball.setXSpeed(s);
+        BallModel.setXSpeed(s);
     }
     /**
      * Set the speed of y-axis of the ball
      * @param s the value of speed of y
      */
     public void setBallYSpeed(int s){
-        ball.setYSpeed(s);
+        BallModel.setYSpeed(s);
     }
 
     /**
