@@ -15,7 +15,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package brickbreaker;
+package main;
+
+import brickbreaker.GameBoard;
+import brickbreaker.HomeMenu;
+import brickbreaker.InfoScreen;
+import brickbreaker.Leaderboard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,7 +52,7 @@ public class GameFrame extends JFrame implements WindowFocusListener {
 
         gameBoard = new GameBoard(this);
 
-        homeMenu = new HomeMenu(this,new Dimension(450,300));
+        homeMenu = new HomeMenu(this ,new Dimension(450,300));
 
         infoScreen = new InfoScreen(this,new Dimension(450,300));
 

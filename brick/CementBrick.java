@@ -32,12 +32,12 @@ public class CementBrick extends Brick {
         return new Rectangle(pos,size);
     }
 
-    public boolean setImpact(Point2D point, int dir, Brick b) {
+    public boolean setImpact(Point2D point, int dir) {
         if(super.isBroken())
             return false;
         super.impact();
         if(!super.isBroken()){
-            crack.makeCrack(point,dir,b);
+            crack.makeCrack(point,dir,this );
             updateBrick();
             return false;
         }

@@ -39,21 +39,6 @@ public class BallModel {
     }
 
     /**
-     * Reverse the speed of x-axis of the ball
-     */
-    public static void reverseX(){
-        speedX *= -1;
-    }
-
-    /**
-     * Reverse the y-axis of the ball
-     */
-    public static void reverseY(){
-        speedY *= -1;
-    }
-
-
-    /**
      *
      * @return the position of the center of the ball
      */

@@ -23,9 +23,6 @@ abstract public class Brick  {
     public static final int RIGHT_IMPACT = 400;
 
 
-
-    private static Random rnd;
-
     private String name;
     Shape brickFace;
 
@@ -47,7 +44,7 @@ abstract public class Brick  {
      * @param strength the impacts needed to break the brick
      */
     public Brick(String name, Point pos,Dimension size,Color border,Color inner,int strength){
-        rnd = new Random();
+        //Crack.rnd = new Random();
         broken = false;
         this.name = name;
         brickFace = makeBrickFace(pos,size);

@@ -17,6 +17,8 @@
  */
 package brickbreaker;
 
+import main.GameFrame;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -74,7 +76,7 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
      * @param area frame size
      */
 
-    public HomeMenu(GameFrame owner,Dimension area){
+    public HomeMenu(GameFrame owner, Dimension area){
 
         this.setFocusable(true);
         this.requestFocusInWindow();

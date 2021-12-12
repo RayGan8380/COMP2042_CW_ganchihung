@@ -35,7 +35,19 @@ public class BallController {
         tmp.setFrame((BallModel.center.getX() -(w / 2)),(BallModel.center.getY() - (h / 2)),w,h);
         BallModel.ballFace = tmp;
     }
+    /**
+     * Reverse the speed of x-axis of the ball
+     */
+    public static void reverseX(){
+        BallModel.speedX *= -1;
+    }
 
+    /**
+     * Reverse the y-axis of the ball
+     */
+    public static void reverseY(){
+        BallModel.speedY *= -1;
+    }
     /**
      * Set to position of the call
      * @param width the width of the ball

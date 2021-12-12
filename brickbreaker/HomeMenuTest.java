@@ -12,7 +12,7 @@ class HomeMenuTest {
 
     @Test
     void testObjectCreation() {
-        GameFrame owner = new GameFrame();
-        homeMenu = new HomeMenu( owner, new Dimension(450,300));
+        //GameFrame owner = new GameFrame();
+        //homeMenu = new HomeMenu( owner, new Dimension(450,300));
     }
 }

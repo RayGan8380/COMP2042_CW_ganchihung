@@ -6,8 +6,7 @@ import java.awt.geom.Point2D;
 import java.util.Random;
 
 public class Crack{
-    public static final int DEF_CRACK_DEPTH = 1;
-    public static final int DEF_STEPS = 35;
+
     private static final int CRACK_SECTIONS = 3;
     private static final double JUMP_PROBABILITY = 0.7;
 
@@ -19,7 +18,7 @@ public class Crack{
     public static final int HORIZONTAL = 200;
 
     private GeneralPath crack;
-    private Random rnd = new Random();
+    public static Random rnd = new Random();
 
     private int crackDepth;
     private int steps;

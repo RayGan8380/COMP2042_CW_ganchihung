@@ -1,5 +1,7 @@
 package brickbreaker;
 
+import main.GameFrame;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

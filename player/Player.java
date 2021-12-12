@@ -25,6 +25,14 @@ public class Player {
     public static final Color INNER_COLOR = Color.GREEN;
     public static Rectangle playerFace;
     public static Point center;
+
+    /**
+     * Contructor of Player
+     * @param ballPoint (x,y) coordinates
+     * @param width width of player
+     * @param height height of player
+     * @param container rectangle component
+     */
     public Player(Point ballPoint,int width,int height,Rectangle container) {
         this.center = ballPoint;
         PlayerModel.moveAmount = 0;

@@ -1,7 +1,6 @@
 package brick;
 
 import java.awt.*;
-//import java.awt.Point;
 
 
 /**

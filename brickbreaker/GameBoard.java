@@ -17,10 +17,15 @@
  */
 package brickbreaker;
 
+import main.GameFrame;
+import wall.WallModel;
+import wall.WallController;
+import wall.Wall;
 import brick.Brick;
 import ball.Ball;
 import ball.BallModel;
 import player.Player;
+import debug.DebugConsole;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,9 +50,13 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
     private Timer gameTimer;
 
-    private Wall wall;
     private Leaderboard leaderboard;
-    private GameFrame gameFrame;
+    public GameFrame gameFrame;
+
+    public Wall wall;
+    public WallController wallController;
+    public WallModel wallModel;
+
 
     private String message;
 
@@ -68,10 +77,10 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
      * Constructor of Gameboard
      * @param owner frame
      */
-    public GameBoard(JFrame owner){
+    public GameBoard(GameFrame owner){
         super();
-        leaderboard = new Leaderboard((GameFrame) owner, new Dimension(450,300));
-        gameFrame = (GameFrame) owner;
+        leaderboard = new Leaderboard(gameFrame, new Dimension(450,300));
+        gameFrame = owner;
         strLen = 0;
         showPauseMenu = false;
 
@@ -80,48 +89,49 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
         this.initialize();
         message = "";
+        wallController = new WallController();
         wall = new Wall(new Rectangle(0,0,DEF_WIDTH,DEF_HEIGHT),30,3,6/2,new Point(300,430));
-
+        wallModel = new WallModel();
         debugConsole = new DebugConsole(wall,this);
         //initialize the first level
-        wall.nextLevel();
-        wall.ballReset();
-        wall.timePointsReset();
+        wallController.nextLevel();
+        wallController.ballReset();
+        wallController.timePointsReset();
 
         gameTimer = new Timer(10,e ->{
-            wall.timePointCalculation();
-            wall.move();
-            wall.findImpacts();
+            wallController.timePointCalculation();
+            wallController.move();
+            wallController.findImpacts();
             //wall.newPoints_string = String.format("%04d", wall.newPoints);
-            message = String.format("Bricks: %d Balls %d",wall.getBrickCount(),wall.getBallCount());
-            if(wall.isBallLost()){
-                if(wall.ballEnd()){
+            message = String.format("Bricks: %d Balls %d",wallModel.getBrickCount(),wallModel.getBallCount());
+            if(wallModel.isBallLost()){
+                if(wallModel.ballEnd()){
                     gameFrame.setClickedFromGameOver(true);
-                    leaderboard.pointsCompare(wall.newPoints);
+                    leaderboard.pointsCompare(wallModel.newPoints);
                     gameFrame.enableLeaderboard();
-                    wall.wallReset();
-                    wall.timePointsReset();
+                    wallController.wallReset();
+                    wallController.timePointsReset();
                     message = "Game over";
                 }
-                wall.ballReset();
+                wallController.ballReset();
                 gameTimer.stop();
             }
-            else if(wall.isDone()){
-                if(wall.hasLevel()){
+            else if(wallModel.isDone()){
+                if(wallController.hasLevel()){
                     message = "Go to Next Level";
                     gameTimer.stop();
-                    wall.ballReset();
-                    wall.wallReset();
-                    wall.nextLevel();
+                    wallController.ballReset();
+                    wallController.wallReset();
+                    wallController.nextLevel();
                     gameFrame.setClickedFromGameOver(true);
-                    leaderboard.pointsCompare(wall.newPoints);
+                    leaderboard.pointsCompare(wallModel.newPoints);
                     gameFrame.enableLeaderboard();
-                    wall.timePointsReset();
+                    wallController.timePointsReset();
                 }
                 else{
                     message = "ALL WALLS DESTROYED";
                     gameTimer.stop();
-                    leaderboard.pointsCompare(wall.newPoints);
+                    leaderboard.pointsCompare(wallModel.newPoints);
                 }
             }
             repaint();
@@ -150,8 +160,8 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         g2d.drawString(message,250,250);
 
         g2d.setFont(timeFont);
-        g2d.drawString("Time: "+ wall.minutes_string + ":" + wall.seconds_string, 250, 225);
-        g2d.drawString("Points: "+ wall.newPoints_string, 250, 180);
+        g2d.drawString("Time: "+ wallModel.minutes_string + ":" + wallModel.seconds_string, 250, 225);
+        g2d.drawString("Points: "+ wallModel.newPoints_string, 250, 180);
 
         drawBall(wall.ball,g2d);
 
@@ -379,15 +389,15 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         }
         else if(restartButtonRect.contains(p)){
             message = "Restarting Game...";
-            wall.timePointsReset();
+            wallController.timePointsReset();
             gameTimer.stop();
-            wall.ballReset();
-            wall.wallReset();
+            wallController.ballReset();
+            wallController.wallReset();
             showPauseMenu = false;
             repaint();
         }
         else if(homeMenuButtonRect.contains(p)){
-            wall.timePointsReset();
+            wallController.timePointsReset();
             gameTimer.stop();
             showPauseMenu = false;
             gameFrame.enableHomeMenu();

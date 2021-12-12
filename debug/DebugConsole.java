@@ -15,19 +15,28 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package brickbreaker;
+package debug;
 
+import wall.WallModel;
+import wall.WallController;
+import wall.Wall;
+import brickbreaker.*;
 import ball.Ball;
 import ball.BallModel;
+
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+
 
 public class DebugConsole extends JDialog implements WindowListener{
 
     private static final String TITLE = "Debug Console";
     private DebugPanel debugPanel;
+    private DebugModel debugModel;
     private GameBoard gameBoard;
     private Wall wall;
 
@@ -43,9 +52,11 @@ public class DebugConsole extends JDialog implements WindowListener{
         this.gameBoard = gameBoard;
         initialize();
 
-        debugPanel = new DebugPanel(wall);
+        debugModel = new DebugModel();
+        debugPanel = new DebugPanel();
         this.add(debugPanel,BorderLayout.CENTER);
 
+        addingListener();
 
         this.pack();
     }
@@ -62,6 +73,27 @@ public class DebugConsole extends JDialog implements WindowListener{
         this.setFocusable(true);
     }
 
+    /**
+     * Add listener to each buttons and sliders
+     */
+    public void addingListener () {
+        ActionListener skipLevelButton = skiplevel -> {
+            WallController.nextLevel();
+            WallController.timePointsReset();
+        };
+
+        ActionListener resetButton = skiplevel -> {
+            WallModel.resetBallCount();
+            WallController.timePointsReset();
+        };
+        ChangeListener ballXspeed = ballX -> WallModel.setBallXSpeed(debugPanel.ballXSpeed.getValue());
+        ChangeListener ballYspeed = ballX -> WallModel.setBallYSpeed(debugPanel.ballYSpeed.getValue());
+
+        debugPanel.skipLevel.addActionListener(skipLevelButton);
+        debugPanel.resetBalls.addActionListener(resetButton);
+        debugPanel.ballXSpeed.addChangeListener(ballXspeed);
+        debugPanel.ballYSpeed.addChangeListener(ballYspeed);
+    }
     @Override
     public void windowOpened(WindowEvent windowEvent) {
 
@@ -91,11 +123,13 @@ public class DebugConsole extends JDialog implements WindowListener{
     public void windowActivated(WindowEvent windowEvent) {
         this.setLocationRelativeTo(null);
         Ball b = wall.ball;
-        debugPanel.setValues(BallModel.getSpeedX(), BallModel.getSpeedY());
+        debugModel.setValues(BallModel.getSpeedX(), BallModel.getSpeedY());
     }
 
     @Override
     public void windowDeactivated(WindowEvent windowEvent) {
 
     }
-}
+
+
+    }
