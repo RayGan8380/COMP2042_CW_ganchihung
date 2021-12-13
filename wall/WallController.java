@@ -32,8 +32,8 @@ public class WallController {
      * Check the impacts between ball and player or ball and bricks
      */
     public static void findImpacts(){
-        if(Wall.playerController.impact(Wall.ball)){
-            Wall.ballController.reverseY();
+        if(PlayerController.impact(Wall.ball)){
+            BallController.reverseY();
         }
         else if(impactWall()){
             /*for efficiency reverse is done into method impactWall
@@ -43,10 +43,10 @@ public class WallController {
             WallModel.newPoints += 50;
         }
         else if(WallModel.impactBorder()) {
-            Wall.ballController.reverseX();
+            BallController.reverseX();
         }
         else if(BallModel.getPosition().getY() < WallModel.area.getY()){
-            Wall.ballController.reverseY();
+            BallController.reverseY();
         }
         else if(BallModel.getPosition().getY() > WallModel.area.getY() + WallModel.area.getHeight()){
             WallModel.ballCount--;
@@ -64,18 +64,18 @@ public class WallController {
             switch(b.findImpact(Wall.ball)) {
                 //Vertical Impact
                 case Brick.UP_IMPACT:
-                    Wall.ballController.reverseY();
+                    BallController.reverseY();
                     return b.setImpact(Ball.down, Crack.UP);
                 case Brick.DOWN_IMPACT:
-                    Wall.ballController.reverseY();
+                    BallController.reverseY();
                     return b.setImpact(Ball.up,Crack.DOWN);
 
                 //Horizontal Impact
                 case Brick.LEFT_IMPACT:
-                    Wall.ballController.reverseX();
+                    BallController.reverseX();
                     return b.setImpact(Ball.right,Crack.RIGHT);
                 case Brick.RIGHT_IMPACT:
-                    Wall.ballController.reverseX();
+                    BallController.reverseX();
                     return b.setImpact(Ball.left,Crack.LEFT);
             }
         }

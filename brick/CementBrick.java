@@ -51,7 +51,7 @@ public class CementBrick extends Brick {
     }
 
     /**
-     * To update the brick's condition
+     * To update the brick's cracking condition
      */
     private void updateBrick(){
         if(!super.isBroken()){

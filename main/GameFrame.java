@@ -17,10 +17,10 @@
  */
 package main;
 
-import brickbreaker.GameBoard;
-import brickbreaker.HomeMenu;
-import brickbreaker.InfoScreen;
-import brickbreaker.Leaderboard;
+import homemenu.HomeMenu;
+import gameboard.GameBoard;
+import infoscreen.InfoScreen;
+import leaderboard.Leaderboard;
 
 import javax.swing.*;
 import java.awt.*;

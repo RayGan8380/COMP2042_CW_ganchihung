@@ -13,7 +13,7 @@ public class PlayerController {
      * @return true or false value
      */
     public static boolean impact(Ball b){
-        return Player.playerFace.contains(BallModel.getPosition()) && Player.playerFace.contains(b.down) ;
+        return Player.playerFace.contains(BallModel.getPosition()) && Player.playerFace.contains(Ball.down) ;
     }
 
     /**

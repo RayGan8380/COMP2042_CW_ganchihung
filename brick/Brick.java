@@ -3,9 +3,7 @@ package brick;
 import ball.Ball;
 
 import java.awt.*;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
-import java.util.Random;
 
 /**
  * Created by filippo on 04/09/16.112122
@@ -44,7 +42,6 @@ abstract public class Brick  {
      * @param strength the impacts needed to break the brick
      */
     public Brick(String name, Point pos,Dimension size,Color border,Color inner,int strength){
-        //Crack.rnd = new Random();
         broken = false;
         this.name = name;
         brickFace = makeBrickFace(pos,size);

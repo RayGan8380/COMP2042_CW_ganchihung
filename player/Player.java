@@ -34,7 +34,7 @@ public class Player {
      * @param container rectangle component
      */
     public Player(Point ballPoint,int width,int height,Rectangle container) {
-        this.center = ballPoint;
+        center = ballPoint;
         PlayerModel.moveAmount = 0;
         playerFace = makeRectangle(width, height);
         PlayerModel.min = container.x + (width / 2);

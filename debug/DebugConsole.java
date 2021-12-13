@@ -17,10 +17,10 @@
  */
 package debug;
 
+import gameboard.GameBoard;
 import wall.WallModel;
 import wall.WallController;
 import wall.Wall;
-import brickbreaker.*;
 import ball.Ball;
 import ball.BallModel;
 

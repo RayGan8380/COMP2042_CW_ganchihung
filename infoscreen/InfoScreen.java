@@ -1,4 +1,4 @@
-package brickbreaker;
+package infoscreen;
 
 import main.GameFrame;
 

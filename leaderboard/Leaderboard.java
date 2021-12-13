@@ -1,4 +1,4 @@
-package brickbreaker;
+package leaderboard;
 
 import main.GameFrame;
 
